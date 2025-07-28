@@ -129,14 +129,17 @@ export default function AdminDashboardClient({ initialQuestions }) {
     }
   };
 
-  const handleEditQuestion = async (serial, data) => {
+  const handleEditQuestion = async (originalSerial, data) => {
     try {
       setLoading(true);
       const response = await fetch("/api/questions", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ serial, ...data }),
+        body: JSON.stringify({ 
+          originalSerial, // The serial to find the question
+          ...data // The new data including potentially new serial
+        }),
       });
       
       if (!response.ok) {
@@ -145,7 +148,7 @@ export default function AdminDashboardClient({ initialQuestions }) {
       }
 
       const updatedQuestion = await response.json();
-      setQuestions(prev => prev.map(q => q.serial === serial ? updatedQuestion : q));
+      setQuestions(prev => prev.map(q => q.serial === originalSerial ? updatedQuestion : q));
       setEditingItem(null);
       setFormData({ serial: "", title: "", questionlink: "", solutionlink: "", topic: "", difficulty: "Easy" });
       setShowForm(false);
@@ -371,11 +374,8 @@ export default function AdminDashboardClient({ initialQuestions }) {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <motion.div
+          <div
             ref={formRef}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
             className="mb-8 glass glow-border rounded-2xl p-6 shadow-2xl"
           >
             <div className="flex items-center justify-between mb-4">
@@ -504,7 +504,7 @@ export default function AdminDashboardClient({ initialQuestions }) {
                 </button>
               </div>
             </form>
-          </motion.div>
+          </div>
         )}
 
         {/* Questions Table */}
@@ -545,11 +545,8 @@ export default function AdminDashboardClient({ initialQuestions }) {
                   const PlatformLogo = platform ? PlatformLogos[platform] : null;
 
                   return (
-                    <motion.tr
+                    <tr
                       key={question.serial}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
                       className="hover:bg-gray-800/30 transition-colors"
                     >
                       <td className="px-4 py-3 text-sm text-gray-300">
@@ -624,7 +621,7 @@ export default function AdminDashboardClient({ initialQuestions }) {
                           </button>
                         </div>
                       </td>
-                    </motion.tr>
+                    </tr>
                   );
                 })}
               </tbody>
@@ -644,12 +641,7 @@ export default function AdminDashboardClient({ initialQuestions }) {
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="glass glow-border rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl"
-          >
+          <div className="glass glow-border rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-white">Confirm Logout</h2>
               <button
@@ -680,7 +672,7 @@ export default function AdminDashboardClient({ initialQuestions }) {
                 Logout
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
 

@@ -232,14 +232,8 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
         </motion.div>
 
         {/* Questions Grid */}
-        <AnimatePresence mode="wait">
-          {filteredQuestions.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-20"
-            >
+        {filteredQuestions.length === 0 ? (
+            <div className="text-center py-20">
               <div className="text-6xl mb-4">🔍</div>
               <h3 className="text-2xl font-bold text-white mb-4">No questions found</h3>
               <p className="text-gray-400 mb-8">Try adjusting your search or filter criteria</p>
@@ -252,24 +246,18 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
               >
                 Show All Questions
               </button>
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
               {filteredQuestions.map((question, index) => (
                 <QuestionCard
                   key={question.serial}
                   question={question}
-                  index={index}
+                  index={0}
                 />
               ))}
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
     </main>
   );

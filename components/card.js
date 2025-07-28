@@ -71,10 +71,7 @@ export function QuestionCard({ question, index = 0, showProgress = false, progre
   const PlatformLogo = platform ? PlatformLogos[platform] : null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.4, delay: index * 0.1, type: "spring", bounce: 0.3 }}
+    <div
       className="group"
       style={{ transform: 'translateZ(0)', zIndex: 1 }}
     >
@@ -185,6 +182,6 @@ export function QuestionCard({ question, index = 0, showProgress = false, progre
           </div>
         )}
       </Card>
-    </motion.div>
+    </div>
   );
 }

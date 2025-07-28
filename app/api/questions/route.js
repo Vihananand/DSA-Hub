@@ -87,17 +87,30 @@ export async function POST(req) {
 
 export async function PUT(req) {
   if (!authenticate()) return Response.json({ error: "Unauthorized" }, { status: 401 });
-  const { serial, title, difficulty, topic, questionlink, solutionlink } = await req.json();
-  if (!serial) return Response.json({ error: "Missing serial" }, { status: 400 });
+  const body = await req.json();
+  const { originalSerial, serial: newSerial, title, difficulty, topic, questionlink, solutionlink } = body;
+  
+  if (!originalSerial) return Response.json({ error: "Missing original serial" }, { status: 400 });
+  
   try {
+    // Update the question, including potentially changing the serial number
     const result = await pool.query(
-      "UPDATE leetcodelinks SET title=$1, difficulty=$2, topic=$3, questionlink=$4, solutionlink=$5 WHERE serial=$6 RETURNING *",
-      [title, difficulty, topic, questionlink, solutionlink, serial]
+      "UPDATE leetcodelinks SET serial=$1, title=$2, difficulty=$3, topic=$4, questionlink=$5, solutionlink=$6 WHERE serial=$7 RETURNING *",
+      [newSerial || originalSerial, title, difficulty, topic, questionlink, solutionlink, originalSerial]
     );
+    
+    if (result.rows.length === 0) {
+      return Response.json({ error: `No question found with serial ${originalSerial}` }, { status: 404 });
+    }
+    
     return Response.json(result.rows[0]);
   } catch (e) {
     console.error("[QUESTIONS API] Error updating question:", e);
-    return Response.json({ error: "Failed to update question" }, { status: 500 });
+    // Check if it's a duplicate serial error
+    if (e.code === '23505' && e.constraint === 'leetcodelinks_pkey') {
+      return Response.json({ error: `Serial number ${newSerial || originalSerial} already exists` }, { status: 400 });
+    }
+    return Response.json({ error: `Failed to update question: ${e.message}` }, { status: 500 });
   }
 }
 
