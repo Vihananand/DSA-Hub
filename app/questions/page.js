@@ -2,7 +2,7 @@ import { getQuestions } from "../../lib/questions";
 import QuestionsClient from "./questions-client";
 
 // Force dynamic rendering and disable caching
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function QuestionsPage() {

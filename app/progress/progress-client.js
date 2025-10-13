@@ -6,7 +6,7 @@ import { LoadingSkeleton } from "../../components/ui";
 
 export default function ProgressClient({ questions }) {
   const [progress, setProgress] = useState({});
-  
+
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
 
@@ -31,14 +31,18 @@ export default function ProgressClient({ questions }) {
     }));
   }
 
-  const doneCount = questions.filter(q => progress[q.serial]?.done).length;
-  const revisedCount = questions.filter(q => progress[q.serial]?.revised).length;
-  const progressPercentage = questions.length > 0 ? (doneCount / questions.length) * 100 : 0;
-  const revisionPercentage = questions.length > 0 ? (revisedCount / questions.length) * 100 : 0;
+  const doneCount = questions.filter((q) => progress[q.serial]?.done).length;
+  const revisedCount = questions.filter(
+    (q) => progress[q.serial]?.revised
+  ).length;
+  const progressPercentage =
+    questions.length > 0 ? (doneCount / questions.length) * 100 : 0;
+  const revisionPercentage =
+    questions.length > 0 ? (revisedCount / questions.length) * 100 : 0;
 
   const topicStats = questions.reduce((stats, q) => {
-    const topics = q.topic ? q.topic.split(',').map(t => t.trim()) : [];
-    topics.forEach(topic => {
+    const topics = q.topic ? q.topic.split(",").map((t) => t.trim()) : [];
+    topics.forEach((topic) => {
       if (!stats[topic]) stats[topic] = { total: 0, done: 0 };
       stats[topic].total++;
       if (progress[q.serial]?.done) stats[topic].done++;
@@ -47,7 +51,7 @@ export default function ProgressClient({ questions }) {
   }, {});
 
   const difficultyStats = questions.reduce((stats, q) => {
-    const diff = q.difficulty?.toLowerCase() || 'unknown';
+    const diff = q.difficulty?.toLowerCase() || "unknown";
     if (!stats[diff]) stats[diff] = { total: 0, done: 0 };
     stats[diff].total++;
     if (progress[q.serial]?.done) stats[diff].done++;
@@ -58,10 +62,7 @@ export default function ProgressClient({ questions }) {
     <main className="relative min-h-screen bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden">
       {/* Animated background elements with parallax */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          style={{ y: backgroundY }}
-          className="absolute inset-0"
-        >
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0">
           <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-3 animate-pulse" />
           <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-3 animate-pulse" />
           <div className="absolute top-1/3 left-1/3 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-2 animate-pulse" />
@@ -89,7 +90,8 @@ export default function ProgressClient({ questions }) {
             className="mx-auto mb-6 h-1 rounded-full bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400"
           />
           <p className="text-lg font-medium text-gray-400 max-w-2xl mx-auto">
-            Track your coding journey and monitor your progress across different topics and difficulty levels
+            Track your coding journey and monitor your progress across different
+            topics and difficulty levels
           </p>
         </motion.div>
 
@@ -106,13 +108,19 @@ export default function ProgressClient({ questions }) {
             className="glass glow-border rounded-2xl p-6 shadow-2xl"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">Overall Progress</h3>
+              <h3 className="text-lg font-semibold text-white">
+                Overall Progress
+              </h3>
               <span className="text-2xl">📊</span>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-3xl font-bold text-emerald-400">{doneCount}</span>
-                <span className="text-sm text-gray-400">/ {questions.length}</span>
+                <span className="text-3xl font-bold text-emerald-400">
+                  {doneCount}
+                </span>
+                <span className="text-sm text-gray-400">
+                  / {questions.length}
+                </span>
               </div>
               <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
                 <motion.div
@@ -141,8 +149,12 @@ export default function ProgressClient({ questions }) {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-3xl font-bold text-blue-400">{revisedCount}</span>
-                <span className="text-sm text-gray-400">/ {questions.length}</span>
+                <span className="text-3xl font-bold text-blue-400">
+                  {revisedCount}
+                </span>
+                <span className="text-sm text-gray-400">
+                  / {questions.length}
+                </span>
               </div>
               <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
                 <motion.div
@@ -171,13 +183,22 @@ export default function ProgressClient({ questions }) {
             </div>
             <div className="space-y-2 text-sm">
               {Object.entries(difficultyStats).map(([difficulty, stats]) => (
-                <div key={difficulty} className="flex justify-between items-center">
+                <div
+                  key={difficulty}
+                  className="flex justify-between items-center"
+                >
                   <span className="capitalize text-gray-300">{difficulty}</span>
-                  <span className={`font-medium ${
-                    difficulty === 'easy' ? 'text-emerald-400' :
-                    difficulty === 'medium' ? 'text-amber-400' :
-                    difficulty === 'hard' ? 'text-red-400' : 'text-gray-400'
-                  }`}>
+                  <span
+                    className={`font-medium ${
+                      difficulty === "easy"
+                        ? "text-emerald-400"
+                        : difficulty === "medium"
+                        ? "text-amber-400"
+                        : difficulty === "hard"
+                        ? "text-red-400"
+                        : "text-gray-400"
+                    }`}
+                  >
                     {stats.done}/{stats.total}
                   </span>
                 </div>
@@ -194,8 +215,12 @@ export default function ProgressClient({ questions }) {
           className="space-y-8"
         >
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">All Questions</h2>
-            <p className="text-gray-400">Mark questions as done or revised to track your progress</p>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              All Questions
+            </h2>
+            <p className="text-gray-400">
+              Mark questions as done or revised to track your progress
+            </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
@@ -204,19 +229,19 @@ export default function ProgressClient({ questions }) {
                 key={question.serial}
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
+                transition={{
                   delay: index * 0.03,
                   duration: 0.5,
                   type: "spring",
-                  bounce: 0.2
+                  bounce: 0.2,
                 }}
-                whileHover={{ 
-                  y: -2, 
-                  transition: { duration: 0.2 } 
+                whileHover={{
+                  y: -2,
+                  transition: { duration: 0.2 },
                 }}
               >
-                <QuestionCard 
-                  question={question} 
+                <QuestionCard
+                  question={question}
                   index={index}
                   showProgress={true}
                   progress={progress[question.serial] || {}}
@@ -236,14 +261,26 @@ export default function ProgressClient({ questions }) {
         >
           <div className="glass-dark glow-border rounded-2xl p-8 max-w-2xl mx-auto">
             <div className="text-4xl mb-4">
-              {progressPercentage >= 100 ? '🎉' : progressPercentage >= 75 ? '🚀' : progressPercentage >= 50 ? '💪' : progressPercentage >= 25 ? '👍' : '🌱'}
+              {progressPercentage >= 100
+                ? "🎉"
+                : progressPercentage >= 75
+                ? "🚀"
+                : progressPercentage >= 50
+                ? "💪"
+                : progressPercentage >= 25
+                ? "👍"
+                : "🌱"}
             </div>
             <p className="text-lg font-medium text-gray-300">
-              {progressPercentage >= 100 ? 'Congratulations! You\'ve completed all questions!' :
-               progressPercentage >= 75 ? 'Amazing progress! You\'re almost there!' :
-               progressPercentage >= 50 ? 'Great job! You\'re halfway through!' :
-               progressPercentage >= 25 ? 'Good start! Keep pushing forward!' :
-               'Begin your coding journey. Every expert was once a beginner!'}
+              {progressPercentage >= 100
+                ? "Congratulations! You've completed all questions!"
+                : progressPercentage >= 75
+                ? "Amazing progress! You're almost there!"
+                : progressPercentage >= 50
+                ? "Great job! You're halfway through!"
+                : progressPercentage >= 25
+                ? "Good start! Keep pushing forward!"
+                : "Begin your coding journey. Every expert was once a beginner!"}
             </p>
           </div>
         </motion.div>

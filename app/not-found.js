@@ -24,14 +24,14 @@ export default function Custom404() {
           className="text-center mb-8"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 5, -5, 0],
-              y: [0, -10, 10, 0]
+              y: [0, -10, 10, 0],
             }}
-            transition={{ 
+            transition={{
               duration: 4,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="text-8xl md:text-9xl mb-6"
           >
@@ -68,7 +68,8 @@ export default function Custom404() {
             Page Not Found
           </h2>
           <p className="text-xl md:text-2xl text-gray-300 font-medium max-w-3xl leading-relaxed">
-            Oops! The page you&apos;re looking for seems to have vanished into the digital void.
+            Oops! The page you&apos;re looking for seems to have vanished into
+            the digital void.
             <span className="block mt-2 text-white font-semibold">
               Let&apos;s get you back on track to solve some coding challenges!
             </span>
@@ -88,7 +89,7 @@ export default function Custom404() {
           >
             <span className="relative z-10">Go Home</span>
           </Link>
-          
+
           <Link
             href="/questions"
             className="glass-dark glow-border text-gray-300 font-bold px-10 py-4 rounded-full shadow-2xl hover:shadow-white/10 transition-all duration-300 text-lg hover:scale-105"
@@ -105,22 +106,34 @@ export default function Custom404() {
           className="w-full max-w-2xl"
         >
           <div className="glass glow-border rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-white/5 transition-all duration-300">
-            
             <div className="relative z-10 text-center">
               <div className="flex items-center justify-center mb-4">
                 <div className="bg-gray-700/50 rounded-full p-3 mr-4">
-                  <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 19c-.77.833.192 2.5 1.732 2.5z" />
+                  <svg
+                    className="w-6 h-6 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 19c-.77.833.192 2.5 1.732 2.5z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-white">HTTP 404 Error</h3>
+                <h3 className="text-2xl font-bold text-white">
+                  HTTP 404 Error
+                </h3>
               </div>
-              
+
               <p className="text-gray-400 mb-6 leading-relaxed">
-                The requested resource could not be found on this server. This might be due to a mistyped URL, 
-                a moved page, or a link that&apos;s no longer valid.
+                The requested resource could not be found on this server. This
+                might be due to a mistyped URL, a moved page, or a link
+                that&apos;s no longer valid.
               </p>
-              
+
               <div className="flex justify-center space-x-4 text-sm text-gray-500">
                 <span>Error Code: 404</span>
                 <span>•</span>
@@ -143,18 +156,38 @@ export default function Custom404() {
             href="/"
             className="group inline-flex items-center text-lg font-medium text-gray-400 hover:text-white transition-colors duration-300"
           >
-            <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            <svg
+              className="mr-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
             </svg>
             <span>Homepage</span>
           </Link>
-          
+
           <Link
             href="/questions"
             className="group inline-flex items-center text-lg font-medium text-gray-400 hover:text-white transition-colors duration-300"
           >
-            <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="mr-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>All Questions</span>
           </Link>
@@ -167,7 +200,12 @@ export default function Custom404() {
           transition={{ delay: 1.2, duration: 1 }}
           className="w-full max-w-4xl mt-16"
         >
-          <svg viewBox="0 0 800 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-16">
+          <svg
+            viewBox="0 0 800 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-16"
+          >
             <motion.path
               d="M0 50 Q200 80 400 50 T800 50"
               stroke="url(#gradient)"

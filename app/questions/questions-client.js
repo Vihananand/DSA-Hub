@@ -1,60 +1,79 @@
 "use client";
 import { useState, useCallback, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { QuestionCard } from "../../components/card";
 import { Dropdown, SearchInput } from "../../components/ui";
 
-export default function QuestionsClient({ questions: allQuestions, error: initialError }) {
+export default function QuestionsClient({
+  questions: allQuestions,
+  error: initialError,
+}) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState({ topic: "", difficulty: "" });
-  
+
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
 
   // Calculate difficulty counts
   const getFilteredQuestions = useCallback(() => {
     return allQuestions.filter((q) => {
-      const matchesSearch = !search || 
+      const matchesSearch =
+        !search ||
         q.title.toLowerCase().includes(search.toLowerCase()) ||
         q.topic.toLowerCase().includes(search.toLowerCase());
-      
-      const matchesTopic = !filter.topic || q.topic.toLowerCase().includes(filter.topic.toLowerCase());
-      const matchesDifficulty = !filter.difficulty || q.difficulty.toLowerCase() === filter.difficulty.toLowerCase();
-      
+
+      const matchesTopic =
+        !filter.topic ||
+        q.topic.toLowerCase().includes(filter.topic.toLowerCase());
+      const matchesDifficulty =
+        !filter.difficulty ||
+        q.difficulty.toLowerCase() === filter.difficulty.toLowerCase();
+
       return matchesSearch && matchesTopic && matchesDifficulty;
     });
   }, [allQuestions, search, filter]);
 
   const filteredQuestions = getFilteredQuestions();
-  
+
   const getStats = useCallback(() => {
     const stats = {
       total: allQuestions.length,
-      easy: allQuestions.filter(q => q.difficulty?.toLowerCase() === 'easy').length,
-      medium: allQuestions.filter(q => q.difficulty?.toLowerCase() === 'medium').length,
-      hard: allQuestions.filter(q => q.difficulty?.toLowerCase() === 'hard').length,
+      easy: allQuestions.filter((q) => q.difficulty?.toLowerCase() === "easy")
+        .length,
+      medium: allQuestions.filter(
+        (q) => q.difficulty?.toLowerCase() === "medium"
+      ).length,
+      hard: allQuestions.filter((q) => q.difficulty?.toLowerCase() === "hard")
+        .length,
     };
     return stats;
   }, [allQuestions]);
 
   const stats = getStats();
-  
+
   const getTopics = useCallback(() => {
     const topicSet = new Set();
-    allQuestions.forEach(q => {
+    allQuestions.forEach((q) => {
       if (q.topic) {
-        const topics = q.topic.split(',').map(t => t.trim()).filter(t => t.length > 0);
-        topics.forEach(topic => topicSet.add(topic));
+        const topics = q.topic
+          .split(",")
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0);
+        topics.forEach((topic) => topicSet.add(topic));
       }
     });
     return Array.from(topicSet).sort();
   }, [allQuestions]);
 
   const availableTopics = getTopics();
-  
+
   const getDifficulties = useCallback(() => {
     const difficultySet = new Set();
-    allQuestions.forEach(q => {
+    allQuestions.forEach((q) => {
       if (q.difficulty) {
         difficultySet.add(q.difficulty);
       }
@@ -65,18 +84,15 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
   const difficulties = getDifficulties();
 
   // Debug logging
-  console.log('Available topics:', availableTopics);
-  console.log('Available difficulties:', difficulties);
-  console.log('Total questions:', allQuestions.length);
+  console.log("Available topics:", availableTopics);
+  console.log("Available difficulties:", difficulties);
+  console.log("Total questions:", allQuestions.length);
 
   if (initialError) {
     return (
       <main className="relative min-h-screen bg-gradient-to-br from-black via-gray-950 to-black">
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            style={{ y: backgroundY }}
-            className="absolute inset-0"
-          >
+          <motion.div style={{ y: backgroundY }} className="absolute inset-0">
             <div className="absolute top-20 left-20 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse" />
             <div className="absolute bottom-20 right-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </motion.div>
@@ -93,9 +109,7 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
               <h1 className="text-6xl md:text-8xl font-black text-red-400 mb-6">
                 Error
               </h1>
-              <p className="text-xl text-gray-300 mb-8">
-                {initialError}
-              </p>
+              <p className="text-xl text-gray-300 mb-8">{initialError}</p>
               <button
                 onClick={() => window.location.reload()}
                 className="px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-semibold rounded-2xl transition-all duration-300"
@@ -113,10 +127,7 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
     <main className="relative min-h-screen bg-gradient-to-br from-black via-gray-950 to-black">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          style={{ y: backgroundY }}
-          className="absolute inset-0"
-        >
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0">
           <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-2000" />
@@ -148,19 +159,27 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
         >
           <div className="glass glow-border rounded-2xl p-6 text-center">
-            <div className="text-3xl font-bold text-white mb-1">{stats.total}</div>
+            <div className="text-3xl font-bold text-white mb-1">
+              {stats.total}
+            </div>
             <div className="text-gray-400 text-sm">Total</div>
           </div>
           <div className="glass glow-border rounded-2xl p-6 text-center">
-            <div className="text-3xl font-bold text-emerald-400 mb-1">{stats.easy}</div>
+            <div className="text-3xl font-bold text-emerald-400 mb-1">
+              {stats.easy}
+            </div>
             <div className="text-gray-400 text-sm">Easy</div>
           </div>
           <div className="glass glow-border rounded-2xl p-6 text-center">
-            <div className="text-3xl font-bold text-amber-400 mb-1">{stats.medium}</div>
+            <div className="text-3xl font-bold text-amber-400 mb-1">
+              {stats.medium}
+            </div>
             <div className="text-gray-400 text-sm">Medium</div>
           </div>
           <div className="glass glow-border rounded-2xl p-6 text-center">
-            <div className="text-3xl font-bold text-red-400 mb-1">{stats.hard}</div>
+            <div className="text-3xl font-bold text-red-400 mb-1">
+              {stats.hard}
+            </div>
             <div className="text-gray-400 text-sm">Hard</div>
           </div>
         </motion.div>
@@ -185,10 +204,15 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
               <div className="relative z-50">
                 <Dropdown
                   value={filter.topic}
-                  onChange={(value) => setFilter(prev => ({ ...prev, topic: value }))}
+                  onChange={(value) =>
+                    setFilter((prev) => ({ ...prev, topic: value }))
+                  }
                   options={[
-                    { value: '', label: 'All Topics' },
-                    ...availableTopics.map(topic => ({ value: topic, label: topic }))
+                    { value: "", label: "All Topics" },
+                    ...availableTopics.map((topic) => ({
+                      value: topic,
+                      label: topic,
+                    })),
                   ]}
                   placeholder="Filter by Topic"
                 />
@@ -196,10 +220,15 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
               <div className="relative z-50">
                 <Dropdown
                   value={filter.difficulty}
-                  onChange={(value) => setFilter(prev => ({ ...prev, difficulty: value }))}
+                  onChange={(value) =>
+                    setFilter((prev) => ({ ...prev, difficulty: value }))
+                  }
                   options={[
-                    { value: '', label: 'All Difficulties' },
-                    ...difficulties.map(diff => ({ value: diff, label: diff }))
+                    { value: "", label: "All Difficulties" },
+                    ...difficulties.map((diff) => ({
+                      value: diff,
+                      label: diff,
+                    })),
                   ]}
                   placeholder="Filter by Difficulty"
                 />
@@ -216,7 +245,9 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
           className="mb-8"
         >
           <div className="flex items-center justify-between text-gray-400">
-            <span>Showing {filteredQuestions.length} of {stats.total} questions</span>
+            <span>
+              Showing {filteredQuestions.length} of {stats.total} questions
+            </span>
             {(search || filter.topic || filter.difficulty) && (
               <button
                 onClick={() => {
@@ -233,31 +264,35 @@ export default function QuestionsClient({ questions: allQuestions, error: initia
 
         {/* Questions Grid */}
         {filteredQuestions.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl font-bold text-white mb-4">No questions found</h3>
-              <p className="text-gray-400 mb-8">Try adjusting your search or filter criteria</p>
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setFilter({ topic: "", difficulty: "" });
-                }}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold rounded-xl transition-all duration-300"
-              >
-                Show All Questions
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-              {filteredQuestions.map((question, index) => (
-                <QuestionCard
-                  key={question.serial}
-                  question={question}
-                  index={0}
-                />
-              ))}
-            </div>
-          )}
+          <div className="text-center py-20">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-bold text-white mb-4">
+              No questions found
+            </h3>
+            <p className="text-gray-400 mb-8">
+              Try adjusting your search or filter criteria
+            </p>
+            <button
+              onClick={() => {
+                setSearch("");
+                setFilter({ topic: "", difficulty: "" });
+              }}
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold rounded-xl transition-all duration-300"
+            >
+              Show All Questions
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+            {filteredQuestions.map((question, index) => (
+              <QuestionCard
+                key={question.serial}
+                question={question}
+                index={0}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

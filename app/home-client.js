@@ -11,10 +11,7 @@ export default function HomeClient({ questions, totalCount, error }) {
     <main className="relative min-h-screen bg-gradient-to-br from-black via-gray-950 to-black overflow-hidden">
       {/* Animated background elements with parallax */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          style={{ y: backgroundY }}
-          className="absolute inset-0"
-        >
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0">
           {/* Floating orbs with glow effects */}
           <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -46,8 +43,9 @@ export default function HomeClient({ questions, totalCount, error }) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12"
           >
-            Master Data Structures & Algorithms with our curated collection of problems. 
-            Track your progress, master the fundamentals, and ace your coding interviews.
+            Master Data Structures & Algorithms with our curated collection of
+            problems. Track your progress, master the fundamentals, and ace your
+            coding interviews.
           </motion.p>
 
           <motion.div
@@ -63,7 +61,7 @@ export default function HomeClient({ questions, totalCount, error }) {
               <span className="relative z-10">Explore Questions</span>
               <div className="absolute inset-0 bg-[#E7A41F] rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity" />
             </Link>
-            
+
             <Link
               href="/progress"
               className="px-8 py-4 border-2 border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white font-semibold rounded-2xl transition-all duration-300 hover:bg-gray-900/50 backdrop-blur-sm"
@@ -81,7 +79,9 @@ export default function HomeClient({ questions, totalCount, error }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
         >
           <div className="glass glow-border rounded-2xl p-8 text-center shadow-2xl">
-            <div className="text-4xl font-bold text-white mb-2">{totalCount || 0}</div>
+            <div className="text-4xl font-bold text-white mb-2">
+              {totalCount || 0}
+            </div>
             <div className="text-gray-400">Total Problems</div>
           </div>
           <div className="glass glow-border rounded-2xl p-8 text-center shadow-2xl">
@@ -117,7 +117,9 @@ export default function HomeClient({ questions, totalCount, error }) {
             </div>
           ) : questions.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-gray-400 text-lg mb-4">📝 No questions available</div>
+              <div className="text-gray-400 text-lg mb-4">
+                📝 No questions available
+              </div>
               <p className="text-gray-500">Check back later for new problems</p>
             </div>
           ) : (
@@ -139,8 +141,18 @@ export default function HomeClient({ questions, totalCount, error }) {
                 className="inline-flex items-center gap-2 px-6 py-3 text-gray-300 hover:text-white border border-gray-600 hover:border-gray-400 rounded-xl transition-all duration-300 hover:bg-gray-900/30"
               >
                 View All Questions
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
@@ -156,25 +168,34 @@ export default function HomeClient({ questions, totalCount, error }) {
         >
           <div className="glass glow-border rounded-2xl p-8 shadow-2xl group hover:scale-105 transition-transform duration-300">
             <div className="text-blue-400 text-4xl mb-4">🎯</div>
-            <h3 className="text-xl font-bold text-white mb-3">Curated Problems</h3>
+            <h3 className="text-xl font-bold text-white mb-3">
+              Curated Problems
+            </h3>
             <p className="text-gray-400 leading-relaxed">
-              Hand-picked problems from top platforms like LeetCode, GeeksforGeeks, and Coding Ninjas
+              Hand-picked problems from top platforms like LeetCode,
+              GeeksforGeeks, and Coding Ninjas
             </p>
           </div>
 
           <div className="glass glow-border rounded-2xl p-8 shadow-2xl group hover:scale-105 transition-transform duration-300">
             <div className="text-green-400 text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-bold text-white mb-3">Progress Tracking</h3>
+            <h3 className="text-xl font-bold text-white mb-3">
+              Progress Tracking
+            </h3>
             <p className="text-gray-400 leading-relaxed">
-              Monitor your solving progress and revision status to stay on track with your goals
+              Monitor your solving progress and revision status to stay on track
+              with your goals
             </p>
           </div>
 
           <div className="glass glow-border rounded-2xl p-8 shadow-2xl group hover:scale-105 transition-transform duration-300">
             <div className="text-purple-400 text-4xl mb-4">🚀</div>
-            <h3 className="text-xl font-bold text-white mb-3">Multiple Platforms</h3>
+            <h3 className="text-xl font-bold text-white mb-3">
+              Multiple Platforms
+            </h3>
             <p className="text-gray-400 leading-relaxed">
-              Access problems from various coding platforms all in one centralized location
+              Access problems from various coding platforms all in one
+              centralized location
             </p>
           </div>
         </motion.div>

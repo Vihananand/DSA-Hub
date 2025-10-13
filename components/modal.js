@@ -2,16 +2,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
-export function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmText = "Delete", cancelText = "Cancel", type = "danger" }) {
+export function ConfirmModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText = "Delete",
+  cancelText = "Cancel",
+  type = "danger",
+}) {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    
+
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
@@ -23,29 +32,33 @@ export function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confi
 
   const getTypeStyles = () => {
     switch (type) {
-      case 'danger':
+      case "danger":
         return {
-          icon: '⚠️',
-          confirmBtn: 'bg-red-900/30 text-red-300 border-red-500/30 hover:bg-red-900/50',
-          iconBg: 'bg-red-900/20 border-red-500/30'
+          icon: "⚠️",
+          confirmBtn:
+            "bg-red-900/30 text-red-300 border-red-500/30 hover:bg-red-900/50",
+          iconBg: "bg-red-900/20 border-red-500/30",
         };
-      case 'success':
+      case "success":
         return {
-          icon: '✅',
-          confirmBtn: 'bg-green-900/30 text-green-300 border-green-500/30 hover:bg-green-900/50',
-          iconBg: 'bg-green-900/20 border-green-500/30'
+          icon: "✅",
+          confirmBtn:
+            "bg-green-900/30 text-green-300 border-green-500/30 hover:bg-green-900/50",
+          iconBg: "bg-green-900/20 border-green-500/30",
         };
-      case 'info':
+      case "info":
         return {
-          icon: 'ℹ️',
-          confirmBtn: 'bg-blue-900/30 text-blue-300 border-blue-500/30 hover:bg-blue-900/50',
-          iconBg: 'bg-blue-900/20 border-blue-500/30'
+          icon: "ℹ️",
+          confirmBtn:
+            "bg-blue-900/30 text-blue-300 border-blue-500/30 hover:bg-blue-900/50",
+          iconBg: "bg-blue-900/20 border-blue-500/30",
         };
       default:
         return {
-          icon: '⚠️',
-          confirmBtn: 'bg-red-900/30 text-red-300 border-red-500/30 hover:bg-red-900/50',
-          iconBg: 'bg-red-900/20 border-red-500/30'
+          icon: "⚠️",
+          confirmBtn:
+            "bg-red-900/30 text-red-300 border-red-500/30 hover:bg-red-900/50",
+          iconBg: "bg-red-900/20 border-red-500/30",
         };
     }
   };
@@ -73,19 +86,17 @@ export function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confi
             <div className="glass glow-border rounded-2xl p-6 shadow-2xl">
               {/* Icon */}
               <div className="flex justify-center mb-4">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center border ${typeStyles.iconBg}`}>
+                <div
+                  className={`w-16 h-16 rounded-full flex items-center justify-center border ${typeStyles.iconBg}`}
+                >
                   <span className="text-2xl">{typeStyles.icon}</span>
                 </div>
               </div>
 
               {/* Content */}
               <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-white mb-3">
-                  {title}
-                </h3>
-                <p className="text-gray-400 leading-relaxed">
-                  {message}
-                </p>
+                <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+                <p className="text-gray-400 leading-relaxed">{message}</p>
               </div>
 
               {/* Actions */}
@@ -111,7 +122,14 @@ export function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confi
   );
 }
 
-export function NotificationModal({ isOpen, onClose, title, message, type = "success", autoClose = 3000 }) {
+export function NotificationModal({
+  isOpen,
+  onClose,
+  title,
+  message,
+  type = "success",
+  autoClose = 3000,
+}) {
   useEffect(() => {
     if (isOpen && autoClose > 0) {
       const timer = setTimeout(() => {
@@ -123,35 +141,35 @@ export function NotificationModal({ isOpen, onClose, title, message, type = "suc
 
   const getTypeStyles = () => {
     switch (type) {
-      case 'success':
+      case "success":
         return {
-          icon: '✅',
-          bgColor: 'bg-green-900/20 border-green-500/30',
-          textColor: 'text-green-300'
+          icon: "✅",
+          bgColor: "bg-green-900/20 border-green-500/30",
+          textColor: "text-green-300",
         };
-      case 'error':
+      case "error":
         return {
-          icon: '❌',
-          bgColor: 'bg-red-900/20 border-red-500/30',
-          textColor: 'text-red-300'
+          icon: "❌",
+          bgColor: "bg-red-900/20 border-red-500/30",
+          textColor: "text-red-300",
         };
-      case 'info':
+      case "info":
         return {
-          icon: 'ℹ️',
-          bgColor: 'bg-blue-900/20 border-blue-500/30',
-          textColor: 'text-blue-300'
+          icon: "ℹ️",
+          bgColor: "bg-blue-900/20 border-blue-500/30",
+          textColor: "text-blue-300",
         };
-      case 'warning':
+      case "warning":
         return {
-          icon: '⚠️',
-          bgColor: 'bg-yellow-900/20 border-yellow-500/30',
-          textColor: 'text-yellow-300'
+          icon: "⚠️",
+          bgColor: "bg-yellow-900/20 border-yellow-500/30",
+          textColor: "text-yellow-300",
         };
       default:
         return {
-          icon: '✅',
-          bgColor: 'bg-green-900/20 border-green-500/30',
-          textColor: 'text-green-300'
+          icon: "✅",
+          bgColor: "bg-green-900/20 border-green-500/30",
+          textColor: "text-green-300",
         };
     }
   };
@@ -168,19 +186,33 @@ export function NotificationModal({ isOpen, onClose, title, message, type = "suc
           className="fixed top-6 left-0 right-0 z-[99999] flex justify-center px-4"
           style={{ zIndex: 99999 }}
         >
-          <div className={`glass glow-border rounded-xl p-4 border shadow-2xl w-full max-w-md ${typeStyles.bgColor}`}>
+          <div
+            className={`glass glow-border rounded-xl p-4 border shadow-2xl w-full max-w-md ${typeStyles.bgColor}`}
+          >
             <div className="flex items-center gap-3">
               <span className="text-xl">{typeStyles.icon}</span>
               <div className="flex-1">
-                <h4 className={`font-medium ${typeStyles.textColor}`}>{title}</h4>
+                <h4 className={`font-medium ${typeStyles.textColor}`}>
+                  {title}
+                </h4>
                 <p className="text-sm text-gray-400 mt-1">{message}</p>
               </div>
               <button
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>

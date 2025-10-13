@@ -5,7 +5,7 @@ import { withAuth, AuthService } from "../../auth.js";
  * Get admin dashboard statistics
  * GET /api/admin/stats
  */
-export const GET = withAuth(async function(request, { auth }) {
+export const GET = withAuth(async function (request, { auth }) {
   try {
     // Get question statistics
     const questionStats = await pool.query(`
@@ -19,7 +19,9 @@ export const GET = withAuth(async function(request, { auth }) {
     `);
 
     // Get admin statistics
-    const adminStats = await pool.query("SELECT COUNT(*) as total_admins FROM admin");
+    const adminStats = await pool.query(
+      "SELECT COUNT(*) as total_admins FROM admin"
+    );
 
     // Get recent questions
     const recentQuestions = await pool.query(`
@@ -63,19 +65,24 @@ export const GET = withAuth(async function(request, { auth }) {
       recent_questions: recentQuestions.rows,
       difficulty_breakdown: difficultyStats.rows,
       popular_topics: topicStats.rows,
-      last_updated: new Date().toISOString()
+      last_updated: new Date().toISOString(),
     };
 
-    return new Response(JSON.stringify({
-      success: true,
-      stats
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
-
+    return new Response(
+      JSON.stringify({
+        success: true,
+        stats,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error("[ADMIN STATS] Error fetching stats:", error);
-    return AuthService.createErrorResponse("Failed to fetch dashboard statistics", 500);
+    return AuthService.createErrorResponse(
+      "Failed to fetch dashboard statistics",
+      500
+    );
   }
 });

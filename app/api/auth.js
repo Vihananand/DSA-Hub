@@ -51,13 +51,13 @@ export class AuthService {
    */
   static async authenticate(request) {
     const token = this.extractToken(request);
-    
+
     if (!token) {
       throw new Error("No authentication token provided");
     }
 
     const decoded = this.verifyToken(token);
-    
+
     // Verify user still exists in database
     const { rows } = await pool.query(
       "SELECT id, username, created_at FROM admin WHERE id = $1",
@@ -71,7 +71,7 @@ export class AuthService {
     return {
       id: decoded.id,
       username: decoded.username,
-      user: rows[0]
+      user: rows[0],
     };
   }
 
@@ -80,7 +80,7 @@ export class AuthService {
    */
   static createAuthResponse(data, token) {
     const isProduction = process.env.NODE_ENV === "production";
-    
+
     const response = new Response(JSON.stringify(data), {
       status: 200,
       headers: {
@@ -89,10 +89,10 @@ export class AuthService {
     });
 
     // Set secure cookie
-    const cookieValue = `token=${token}; HttpOnly; Path=/; Max-Age=${24 * 60 * 60}; SameSite=Strict${
-      isProduction ? "; Secure" : ""
-    }`;
-    
+    const cookieValue = `token=${token}; HttpOnly; Path=/; Max-Age=${
+      24 * 60 * 60
+    }; SameSite=Strict${isProduction ? "; Secure" : ""}`;
+
     response.headers.set("Set-Cookie", cookieValue);
     return response;
   }
@@ -102,18 +102,21 @@ export class AuthService {
    */
   static createLogoutResponse() {
     const isProduction = process.env.NODE_ENV === "production";
-    
-    const response = new Response(JSON.stringify({ success: true, message: "Logged out successfully" }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+
+    const response = new Response(
+      JSON.stringify({ success: true, message: "Logged out successfully" }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const cookieValue = `token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict${
       isProduction ? "; Secure" : ""
     }`;
-    
+
     response.headers.set("Set-Cookie", cookieValue);
     return response;
   }
@@ -122,10 +125,13 @@ export class AuthService {
    * Create error response
    */
   static createErrorResponse(message, status = 401) {
-    return new Response(JSON.stringify({ error: message, authenticated: false }), {
-      status,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: message, authenticated: false }),
+      {
+        status,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }
 
@@ -133,7 +139,7 @@ export class AuthService {
  * Higher-order function to protect API routes
  */
 export function withAuth(handler) {
-  return async function(request, context) {
+  return async function (request, context) {
     try {
       const auth = await AuthService.authenticate(request);
       // Add auth data to request context

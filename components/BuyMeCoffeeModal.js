@@ -29,11 +29,10 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
 
   const generateQR = async () => {
     if (selectedAmount <= 0) return;
-    
+
     setQrLoading(true);
     setShowQR(true);
-    
-    // Small delay to show loading state, then show thank you
+
     setTimeout(() => {
       setQrLoading(false);
       setShowThankYou(true);
@@ -52,13 +51,13 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8, y: 50 },
     visible: { opacity: 1, scale: 1, y: 0 },
-    exit: { opacity: 0, scale: 0.8, y: 50 }
+    exit: { opacity: 0, scale: 0.8, y: 50 },
   };
 
   const overlayVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
-    exit: { opacity: 0 }
+    exit: { opacity: 0 },
   };
 
   if (!isOpen) return null;
@@ -92,7 +91,7 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
               >
                 <div className="bg-white p-4 rounded-xl mb-6 inline-block">
                   <Image
-                    src={`/api/upi-qr?amount=${selectedAmount}&name=Vihan Anand&upi=9506277581@slc`}
+                    src={`/api/upi-qr?amount=${selectedAmount}&name=Vihan Anand&upi=9506277581@upi`}
                     alt="UPI QR Code"
                     width={250}
                     height={250}
@@ -136,16 +135,21 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
                 >
                   ☕
                 </motion.div>
-                <h2 className="text-2xl font-bold text-white mb-2">Buy Me a Coffee</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Buy Me a Coffee
+                </h2>
                 <p className="text-gray-400 text-sm">
-                  Support the development of DSA Hub! Your contribution helps keep this platform free and growing.
+                  Support the development of DSA Hub! Your contribution helps
+                  keep this platform free and growing.
                 </p>
               </div>
 
               {/* Amount Selection */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-white mb-3">Choose Amount (₹)</h3>
-                
+                <h3 className="text-lg font-semibold text-white mb-3">
+                  Choose Amount (₹)
+                </h3>
+
                 {/* Predefined amounts */}
                 <div className="grid grid-cols-3 gap-2 mb-4">
                   {predefinedAmounts.map((amount) => (
@@ -156,8 +160,8 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
                       onClick={() => handleAmountSelect(amount)}
                       className={`p-3 rounded-xl font-semibold transition-all duration-200 ${
                         selectedAmount === amount && !customAmount
-                          ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black'
-                          : 'bg-white/10 text-white hover:bg-white/20'
+                          ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black"
+                          : "bg-white/10 text-white hover:bg-white/20"
                       }`}
                     >
                       ₹{amount}
@@ -191,11 +195,13 @@ export function BuyMeCoffeeModal({ isOpen, onClose }) {
                 disabled={selectedAmount <= 0}
                 className={`w-full p-4 rounded-xl font-bold text-lg mb-6 transition-all duration-200 ${
                   selectedAmount > 0
-                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black hover:from-yellow-400 hover:to-orange-400'
-                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black hover:from-yellow-400 hover:to-orange-400"
+                    : "bg-gray-600 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                {qrLoading ? 'Generating...' : `Generate UPI QR - ₹${selectedAmount}`}
+                {qrLoading
+                  ? "Generating..."
+                  : `Generate UPI QR - ₹${selectedAmount}`}
               </motion.button>
 
               {/* Loading State */}

@@ -16,7 +16,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    
+
     try {
       console.log("[CLIENT] Attempting login for username:", username);
       const res = await fetch("/api/admin", {
@@ -25,9 +25,9 @@ export default function AdminLogin() {
         credentials: "include", // 🔥 CRITICAL: Send cookies
         body: JSON.stringify({ username, password }),
       });
-      
+
       console.log("[CLIENT] Login response status:", res.status);
-      
+
       if (res.ok) {
         const data = await res.json();
         console.log("[CLIENT] Login successful:", data);
@@ -67,13 +67,13 @@ export default function AdminLogin() {
           className="text-center mb-8"
         >
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, 5, -5, 0],
             }}
-            transition={{ 
+            transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="text-6xl md:text-7xl mb-6"
           >
@@ -97,7 +97,9 @@ export default function AdminLogin() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="mx-auto mb-4 h-1 rounded-full bg-gradient-to-r from-gray-400 via-white to-gray-400"
           />
-          <p className="text-lg text-gray-400">Secure access to DSA Hub management</p>
+          <p className="text-lg text-gray-400">
+            Secure access to DSA Hub management
+          </p>
         </motion.div>
 
         {/* Login Form */}
@@ -108,17 +110,23 @@ export default function AdminLogin() {
           className="w-full max-w-md"
         >
           <div className="glass glow-border rounded-2xl p-8 shadow-2xl">
-            
             <div className="relative z-10">
               <form onSubmit={handleLogin} className="flex flex-col gap-6">
                 <div className="text-center mb-2">
-                  <h2 className="text-2xl font-bold text-white mb-2">Login Required</h2>
-                  <p className="text-gray-400 text-sm">Enter your credentials to continue</p>
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    Login Required
+                  </h2>
+                  <p className="text-gray-400 text-sm">
+                    Enter your credentials to continue
+                  </p>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="username">
+                    <label
+                      className="block text-gray-300 text-sm font-medium mb-2"
+                      htmlFor="username"
+                    >
                       Username
                     </label>
                     <input
@@ -127,14 +135,17 @@ export default function AdminLogin() {
                       placeholder="Enter your username"
                       className="w-full px-4 py-3 rounded-lg glass-dark border border-gray-600/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/30 transition-all duration-300"
                       value={username}
-                      onChange={e => setUsername(e.target.value)}
+                      onChange={(e) => setUsername(e.target.value)}
                       autoFocus
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="password">
+                    <label
+                      className="block text-gray-300 text-sm font-medium mb-2"
+                      htmlFor="password"
+                    >
                       Password
                     </label>
                     <div className="relative">
@@ -144,23 +155,50 @@ export default function AdminLogin() {
                         placeholder="Enter your password"
                         className="w-full px-4 py-3 pr-12 rounded-lg glass-dark border border-gray-600/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/30 transition-all duration-300"
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none p-1 cursor-pointer"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
                         {showPassword ? (
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                            />
                           </svg>
                         ) : (
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
                           </svg>
                         )}
                       </button>
@@ -186,16 +224,42 @@ export default function AdminLogin() {
                   <span className="relative z-10 flex items-center justify-center">
                     {loading ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Logging in...
                       </>
                     ) : (
                       <>
-                        <svg className="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        <svg
+                          className="mr-2 w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                          />
                         </svg>
                         Login to Dashboard
                       </>
@@ -207,8 +271,18 @@ export default function AdminLogin() {
               {/* Security Notice */}
               <div className="mt-6 pt-6 border-t border-gray-700/50">
                 <div className="flex items-center justify-center text-gray-400 text-xs">
-                  <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <svg
+                    className="mr-2 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
                   </svg>
                   <span>This is a secure admin area</span>
                 </div>
@@ -228,8 +302,18 @@ export default function AdminLogin() {
             href="/"
             className="group inline-flex items-center text-lg font-medium text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer"
           >
-            <svg className="mr-2 w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="mr-2 w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             <span>Back to Homepage</span>
           </Link>
@@ -242,7 +326,12 @@ export default function AdminLogin() {
           transition={{ delay: 1.0, duration: 1 }}
           className="w-full max-w-2xl mt-16"
         >
-          <svg viewBox="0 0 400 50" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-12">
+          <svg
+            viewBox="0 0 400 50"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-12"
+          >
             <motion.path
               d="M0 25 Q100 10 200 25 T400 25"
               stroke="url(#gradient)"

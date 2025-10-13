@@ -12,7 +12,10 @@ export async function POST(request) {
 
     // Validate input
     if (!username || !password) {
-      return AuthService.createErrorResponse("Username and password are required", 400);
+      return AuthService.createErrorResponse(
+        "Username and password are required",
+        400
+      );
     }
 
     if (typeof username !== "string" || typeof password !== "string") {
@@ -27,7 +30,10 @@ export async function POST(request) {
     const admin = await AdminService.findByUsername(username);
     if (!admin) {
       // Use same response time to prevent username enumeration
-      await bcrypt.compare(password, "$2b$10$dummy.hash.to.prevent.timing.attacks");
+      await bcrypt.compare(
+        password,
+        "$2b$10$dummy.hash.to.prevent.timing.attacks"
+      );
       return AuthService.createErrorResponse("Invalid credentials", 401);
     }
 
@@ -41,30 +47,38 @@ export async function POST(request) {
     const tokenPayload = {
       id: admin.id,
       username: admin.username,
-      type: "admin"
+      type: "admin",
     };
 
     const token = AuthService.generateToken(tokenPayload, "24h");
 
     // Return success response with cookie
-    return AuthService.createAuthResponse({
-      success: true,
-      message: "Login successful",
-      user: {
-        id: admin.id,
-        username: admin.username,
-        created_at: admin.created_at
-      }
-    }, token);
-
+    return AuthService.createAuthResponse(
+      {
+        success: true,
+        message: "Login successful",
+        user: {
+          id: admin.id,
+          username: admin.username,
+          created_at: admin.created_at,
+        },
+      },
+      token
+    );
   } catch (error) {
     console.error("[LOGIN] Error during login:", error);
-    
+
     // Don't expose internal errors to client
-    if (error.message.includes("connect") || error.message.includes("database")) {
-      return AuthService.createErrorResponse("Service temporarily unavailable", 503);
+    if (
+      error.message.includes("connect") ||
+      error.message.includes("database")
+    ) {
+      return AuthService.createErrorResponse(
+        "Service temporarily unavailable",
+        503
+      );
     }
-    
+
     return AuthService.createErrorResponse("Authentication failed", 500);
   }
-} 
+}

@@ -14,13 +14,12 @@ export async function POST(request) {
     } catch (error) {
       // Ignore auth errors for logout - we'll clear the cookie anyway
     }
-    
+
     // Always return success and clear cookie
     return AuthService.createLogoutResponse();
-    
   } catch (error) {
     console.error("[LOGOUT] Error during logout:", error);
     // Even if there's an error, clear the cookie
     return AuthService.createLogoutResponse();
   }
-} 
+}

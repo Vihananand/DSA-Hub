@@ -1,6 +1,7 @@
 import helmet from "helmet";
 
-const allowedOrigin = process.env.NEXT_PUBLIC_SITE_ORIGIN || "http://localhost:3000";
+const allowedOrigin =
+  process.env.NEXT_PUBLIC_SITE_ORIGIN || "http://localhost:3000";
 const rateLimitMap = new Map();
 const RATE_LIMIT = 100; // requests per 15 min
 const WINDOW = 15 * 60 * 1000;
@@ -29,11 +30,13 @@ export async function middleware(req) {
   entry.count++;
   rateLimitMap.set(ip, entry);
   if (entry.count > RATE_LIMIT) {
-    return new Response(JSON.stringify({ error: "Too many requests" }), { status: 429 });
+    return new Response(JSON.stringify({ error: "Too many requests" }), {
+      status: 429,
+    });
   }
   // Helmet headers
   const res = await helmet()(req);
   res.headers.set("Access-Control-Allow-Origin", allowedOrigin);
   res.headers.set("Access-Control-Allow-Credentials", "true");
   return res;
-} 
+}

@@ -9,7 +9,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const amount = searchParams.get('amount') || '50';
     const name = searchParams.get('name') || 'Vihan Anand';
-    const upi = searchParams.get('upi') || '9506277581@slc';
+    const upi = searchParams.get('upi') || '9506277581@upi';
 
     // Validation
     if (!upi || !name) {

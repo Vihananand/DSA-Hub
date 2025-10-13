@@ -2,7 +2,7 @@ import { getLatestQuestions, getTotalQuestionCount } from "../lib/questions";
 import HomeClient from "./home-client";
 
 // Force dynamic rendering and disable caching
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Home() {
@@ -13,7 +13,7 @@ export default async function Home() {
   try {
     const [latestQuestions, count] = await Promise.all([
       getLatestQuestions(4),
-      getTotalQuestionCount()
+      getTotalQuestionCount(),
     ]);
     questions = latestQuestions;
     totalCount = count;
@@ -22,5 +22,7 @@ export default async function Home() {
     console.error(e);
   }
 
-  return <HomeClient questions={questions} totalCount={totalCount} error={error} />;
+  return (
+    <HomeClient questions={questions} totalCount={totalCount} error={error} />
+  );
 }

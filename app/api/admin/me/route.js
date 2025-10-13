@@ -16,18 +16,20 @@ export async function GET(request) {
       return AuthService.createErrorResponse("User profile not found", 404);
     }
 
-    return new Response(JSON.stringify({
-      authenticated: true,
-      user: {
-        id: profile.id,
-        username: profile.username,
-        created_at: profile.created_at
+    return new Response(
+      JSON.stringify({
+        authenticated: true,
+        user: {
+          id: profile.id,
+          username: profile.username,
+          created_at: profile.created_at,
+        },
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
       }
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
-
+    );
   } catch (error) {
     return AuthService.createErrorResponse(error.message, 401);
   }
@@ -44,11 +46,17 @@ export async function PATCH(request) {
     const { currentPassword, newPassword } = body;
 
     if (!currentPassword || !newPassword) {
-      return AuthService.createErrorResponse("Current password and new password are required", 400);
+      return AuthService.createErrorResponse(
+        "Current password and new password are required",
+        400
+      );
     }
 
     if (newPassword.length < 6) {
-      return AuthService.createErrorResponse("New password must be at least 6 characters", 400);
+      return AuthService.createErrorResponse(
+        "New password must be at least 6 characters",
+        400
+      );
     }
 
     // Get current admin data
@@ -58,30 +66,41 @@ export async function PATCH(request) {
     }
 
     // Verify current password
-    const isValidPassword = await bcrypt.compare(currentPassword, admin.password);
+    const isValidPassword = await bcrypt.compare(
+      currentPassword,
+      admin.password
+    );
     if (!isValidPassword) {
-      return AuthService.createErrorResponse("Current password is incorrect", 401);
+      return AuthService.createErrorResponse(
+        "Current password is incorrect",
+        401
+      );
     }
 
     // Hash new password
     const hashedNewPassword = await bcrypt.hash(newPassword, 12);
-    
+
     // Update password
     await AdminService.updatePassword(auth.id, hashedNewPassword);
-    
-    return new Response(JSON.stringify({
-      success: true,
-      message: "Password updated successfully"
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
 
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Password updated successfully",
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error("[PROFILE UPDATE] Error:", error);
-    if (error.message === "No authentication token provided" || error.message.includes("Invalid")) {
+    if (
+      error.message === "No authentication token provided" ||
+      error.message.includes("Invalid")
+    ) {
       return AuthService.createErrorResponse(error.message, 401);
     }
     return AuthService.createErrorResponse("Profile update failed", 500);
   }
-} 
+}
