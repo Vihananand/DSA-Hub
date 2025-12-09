@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { QuestionCard } from "../../components/card";
-import { LoadingSkeleton } from "../../components/ui";
+import { LoadingSkeleton, SearchInput, Dropdown } from "../../components/ui";
 
 export default function ProgressClient({ questions }) {
   const [progress, setProgress] = useState({});
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({ topic: "", difficulty: "", status: "" });
 
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
@@ -39,6 +41,64 @@ export default function ProgressClient({ questions }) {
     questions.length > 0 ? (doneCount / questions.length) * 100 : 0;
   const revisionPercentage =
     questions.length > 0 ? (revisedCount / questions.length) * 100 : 0;
+
+  // Get filtered questions based on search and filters
+  const getFilteredQuestions = useCallback(() => {
+    return questions.filter((q) => {
+      const matchesSearch =
+        !search ||
+        q.title.toLowerCase().includes(search.toLowerCase()) ||
+        q.topic.toLowerCase().includes(search.toLowerCase());
+
+      const matchesTopic =
+        !filter.topic ||
+        q.topic.toLowerCase().includes(filter.topic.toLowerCase());
+      
+      const matchesDifficulty =
+        !filter.difficulty ||
+        q.difficulty.toLowerCase() === filter.difficulty.toLowerCase();
+
+      const matchesStatus =
+        !filter.status ||
+        (filter.status === "done" && progress[q.serial]?.done) ||
+        (filter.status === "revised" && progress[q.serial]?.revised) ||
+        (filter.status === "pending" && !progress[q.serial]?.done);
+
+      return matchesSearch && matchesTopic && matchesDifficulty && matchesStatus;
+    });
+  }, [questions, search, filter, progress]);
+
+  const filteredQuestions = getFilteredQuestions();
+
+  // Get available topics
+  const getTopics = useCallback(() => {
+    const topicSet = new Set();
+    questions.forEach((q) => {
+      if (q.topic) {
+        const topics = q.topic
+          .split(",")
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0);
+        topics.forEach((topic) => topicSet.add(topic));
+      }
+    });
+    return Array.from(topicSet).sort();
+  }, [questions]);
+
+  const availableTopics = getTopics();
+
+  // Get available difficulties
+  const getDifficulties = useCallback(() => {
+    const difficultySet = new Set();
+    questions.forEach((q) => {
+      if (q.difficulty) {
+        difficultySet.add(q.difficulty);
+      }
+    });
+    return Array.from(difficultySet).sort();
+  }, [questions]);
+
+  const difficulties = getDifficulties();
 
   const topicStats = questions.reduce((stats, q) => {
     const topics = q.topic ? q.topic.split(",").map((t) => t.trim()) : [];
@@ -207,6 +267,90 @@ export default function ProgressClient({ questions }) {
           </motion.div>
         </motion.div>
 
+        {/* Search and Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-8 relative z-50"
+          style={{ zIndex: 1000 }}
+        >
+          <div className="glass glow-border rounded-2xl p-6 relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="relative z-50">
+                <SearchInput
+                  value={search}
+                  onChange={setSearch}
+                  placeholder="Search questions or topics..."
+                />
+              </div>
+              <div className="relative z-50">
+                <Dropdown
+                  value={filter.topic}
+                  onChange={(value) =>
+                    setFilter((prev) => ({ ...prev, topic: value }))
+                  }
+                  options={[
+                    { value: "", label: "All Topics" },
+                    ...availableTopics.map((topic) => ({
+                      value: topic,
+                      label: topic,
+                    })),
+                  ]}
+                  placeholder="Filter by Topic"
+                />
+              </div>
+              <div className="relative z-50">
+                <Dropdown
+                  value={filter.difficulty}
+                  onChange={(value) =>
+                    setFilter((prev) => ({ ...prev, difficulty: value }))
+                  }
+                  options={[
+                    { value: "", label: "All Difficulties" },
+                    ...difficulties.map((diff) => ({
+                      value: diff,
+                      label: diff,
+                    })),
+                  ]}
+                  placeholder="Filter by Difficulty"
+                />
+              </div>
+              <div className="relative z-50">
+                <Dropdown
+                  value={filter.status}
+                  onChange={(value) =>
+                    setFilter((prev) => ({ ...prev, status: value }))
+                  }
+                  options={[
+                    { value: "", label: "All Status" },
+                    { value: "done", label: "Done" },
+                    { value: "revised", label: "Revised" },
+                    { value: "pending", label: "Pending" },
+                  ]}
+                  placeholder="Filter by Status"
+                />
+              </div>
+            </div>
+            {(search || filter.topic || filter.difficulty || filter.status) && (
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-sm text-gray-400">
+                  Showing {filteredQuestions.length} of {questions.length} questions
+                </span>
+                <button
+                  onClick={() => {
+                    setSearch("");
+                    setFilter({ topic: "", difficulty: "", status: "" });
+                  }}
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
         {/* Questions Grid */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -223,33 +367,54 @@ export default function ProgressClient({ questions }) {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {questions.map((question, index) => (
-              <motion.div
-                key={question.serial}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  delay: index * 0.03,
-                  duration: 0.5,
-                  type: "spring",
-                  bounce: 0.2,
+          {filteredQuestions.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="text-6xl mb-4">🔍</div>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                No questions found
+              </h3>
+              <p className="text-gray-400 mb-8">
+                Try adjusting your search or filter criteria
+              </p>
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setFilter({ topic: "", difficulty: "", status: "" });
                 }}
-                whileHover={{
-                  y: -2,
-                  transition: { duration: 0.2 },
-                }}
+                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold rounded-xl transition-all duration-300"
               >
-                <QuestionCard
-                  question={question}
-                  index={index}
-                  showProgress={true}
-                  progress={progress[question.serial] || {}}
-                  onProgressChange={handleProgressChange}
-                />
-              </motion.div>
-            ))}
-          </div>
+                Show All Questions
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2">
+              {filteredQuestions.map((question, index) => (
+                <motion.div
+                  key={question.serial}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    delay: index * 0.03,
+                    duration: 0.5,
+                    type: "spring",
+                    bounce: 0.2,
+                  }}
+                  whileHover={{
+                    y: -2,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  <QuestionCard
+                    question={question}
+                    index={index}
+                    showProgress={true}
+                    progress={progress[question.serial] || {}}
+                    onProgressChange={handleProgressChange}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Motivational Section */}
